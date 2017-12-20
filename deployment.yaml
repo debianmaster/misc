@@ -42,25 +42,5 @@ spec:
           name: uiconfig
         name: uiconfig
 status: {}
----
-apiVersion: v1
-kind: Service
-metadata:
-  creationTimestamp: null
-  labels:
-    app: hm
-  name: hm
-spec:
-  ports:
-  - name: 80-3000
-    port: 80
-    nodePort: 32315
-    protocol: TCP
-    targetPort: 3000
-  selector:
-    app: hm
-  type: NodePort
-status:
-  loadBalancer: {}
 
   
