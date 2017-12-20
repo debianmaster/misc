@@ -1,0 +1,66 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: hm
+  name: hm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hm
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: hm
+    spec:
+      containers:
+      - image: debianmaster/hm:latest
+        name: hm
+        imagePullPolicy: Always
+        resources: {}
+        volumeMounts:
+        - mountPath: /opt/app-root/src/models/index.js
+          name: dbconfig
+          subPath: index.js
+        - mountPath: /opt/app-root/src/public/scripts/config.js
+          name: uiconfig
+          subPath: config.js
+      imagePullSecrets:
+      - name: hub
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: dbconfig
+        name: dbconfig
+      - configMap:
+          defaultMode: 420
+          name: uiconfig
+        name: uiconfig
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: hm
+  name: hm
+spec:
+  ports:
+  - name: 80-3000
+    port: 80
+    nodePort: 32315
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: hm
+  type: NodePort
+status:
+  loadBalancer: {}
+
+  
